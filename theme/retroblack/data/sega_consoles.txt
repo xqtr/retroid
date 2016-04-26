@@ -1,0 +1,3 @@
+GameGear%gamegear.png%!loadfromfile(2#$dir_theme/data/gamegear.nfo)%|makelist "$dir_main/gamedata/gamegear/roms" "*.zip" fusion $dir_theme/data/gblist.txt;!loadscreen(gamegear)
+Master System%mastersystem.png%!loadfromfile(2#$dir_theme/data/mastersystem.nfo)%|makelist "$dir_main/gamedata/mastersystem/roms" "*.zip" fusion $dir_theme/data/gblist.txt;!loadscreen(mastersystem)
+Genesis%genesis.png%!loadfromfile(2#$dir_theme/data/genesis.nfo)%|makelist "$dir_main/gamedata/genesis/roms" "*.zip" fusion $dir_theme/data/gblist.txt;!loadscreen(genesis)

@@ -1,0 +1,3 @@
+Nintendo%nintendo.png%!nil%!loadscreen(nintendo)
+Sega%sega.png%nil%!loadscreen(sega)
+SNK%snk.png%nil%!loadscreen(snk)

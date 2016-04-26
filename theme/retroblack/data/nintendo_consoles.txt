@@ -1,0 +1,5 @@
+Gameboy%Gameboy.png%!loadfromfile(2#$dir_theme/data/gameboy.nfo)%|makelist "$dir_main/gamedata/gb/roms" "*.gb" vba $dir_theme/data/gblist.txt;!loadscreen(gameboy)
+Gameboy Color%GameboyColor.png%!loadfromfile(2#$dir_theme/data/gameboycolor.nfo)%|makelist "$dir_main/gamedata/gbc/roms" "*.gbc" vba $dir_theme/data/gblist.txt;!loadscreen(gbc)
+Gameboy Advance%Gameboy Advance.png%!loadfromfile(2#$dir_theme/data/gameboyadvance.nfo)%|makelist "$dir_main/gamedata/gba/roms" "*.zip" vba $dir_theme/data/gblist.txt;!loadscreen(gba)
+Nintendo Entertaining System%NES.png%!loadfromfile(2#$dir_theme/data/nes.nfo)%|makelist "$dir_main/gamedata/nes/roms" "*.smc" zsnes $dir_theme/data/gblist.txt;!loadscreen(nes)
+Super NES%SuperNES.png%!loadfromfile(2#$dir_theme/data/snes.nfo)%|makelist "$dir_main/gamedata/snes/roms" "*.smc" zsnes $dir_theme/data/gblist.txt;!loadscreen(snes)

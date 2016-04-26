@@ -1,0 +1,1 @@
+Neogeo%neogeodev.png%!loadfromfile(2#$dir_theme/data/neogeo.nfo)%|makelist "$dir_main/gamedata/neogeo/roms" "*.zip" mame $dir_theme/data/gblist.txt;!loadscreen(neogeo)

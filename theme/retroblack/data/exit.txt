@@ -1,0 +1,3 @@
+Exit%!update%!exit
+Shutdown%!update%nil
+Reboot%!update%nil

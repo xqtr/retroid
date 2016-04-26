@@ -1,0 +1,3 @@
+GameGear%gglogo.png%nil%nil
+Master System%smslogo.png%nil%nil
+Genesis%genlogo.png%nil%nil

@@ -1,0 +1,2 @@
+RetroBlack%!update%!saveinistring($dir_main/settings.ini#theme#name#retroblack);!themeupdate
+Demos%!update%!saveinistring($dir_main/settings.ini#theme#name#demos);!themeupdate

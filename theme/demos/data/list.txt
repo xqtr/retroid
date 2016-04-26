@@ -1,0 +1,11 @@
+Slider%!update%!loadscreen(slider)
+Gauge%!update%!loadscreen(gauge)
+Button%!update%!loadscreen(button)
+Progress and Panel%!update%!loadscreen(progress)
+Sliding Images%!update%!loadscreen(simages)
+Labels and Text%!update%!loadscreen(labels)
+Video%!update%!loadscreen(video)
+TextViewer%!update%!loadscreen(textviewer)
+Timer%!update%!loadscreen(timer)
+Reboot%!update%nil
+Exit%!update%!exit

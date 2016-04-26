@@ -1,0 +1,1082 @@
+
+						 ____      _             _     _ 
+						|  _ \ ___| |_ _ __ ___ (_) __| |
+						| |_) / _ \ __| '__/ _ \| |/ _` |
+						|  _ <  __/ |_| | | (_) | | (_| |
+						|_| \_\___|\__|_|  \___/|_|\__,_|
+
+
+Retroid is a GUI Frontend not only for retro gaming and emulators, but any kind
+of applications. It supports a set of internal commands to use the GUI and also
+can execute any shell command. The combinations and use of this frontend is 
+limitless. Right now there is a set of components that can be used, but in the
+future, more will be added. Below is a description of the commands and the 
+properties of each component (button, label, listview etc.).
+
+Retroid, loads this components from .ini files, which are readable and easy to 
+use, even with a simple text editor. Each .ini file, represents a screen. There
+is no limit to the number of .ini files, someone can use. The only limit is, 
+that in each .ini/screen can be used up to 100 components, totally. 
+
+It began as a frontend for emulators, thats how the name originated, but it can
+be used for other purposes also.
+
+-------------------------------------------------------------------------------
+ _                _   
+(_)_ _  _ __ _  _| |_ 
+| | ' \| '_ \ || |  _|
+|_|_||_| .__/\_,_|\__|
+       |_|   
+------------------------=[         Input         ]=----------------------------
+
+Retroid supports keyboard, mouse and joysticks. Also in the future touch 
+interface will be added. The interface is build with simplicity in mind, so
+only two buttons and arrow keys are enough to use the frontend.
+
+Keyboard Keys: 
+- Arrow keys for movement
+- Enter, for selection or confirm
+- Esc, to go back one screen or exit.
+
+Joystick:
+- Keypad for movement
+- Button 1 (X) for select
+- Button 2 (Y) to go back one screen or exit.
+
+Mouse
+- Left button to select
+- Right button to go back one screen or exit.
+
+-------------------------------------------------------------------------------
+__   __        _      _    _        
+\ \ / /_ _ _ _(_)__ _| |__| |___ ___
+ \ V / _` | '_| / _` | '_ \ / -_|_-<
+  \_/\__,_|_| |_\__,_|_.__/_\___/__/
+
+------------------------=[       Variables       ]=----------------------------
+
+The following variables can be used, inside internal or external / shell 
+commands. The names are self explenatory and represent numbers, paths, texts 
+for system settings or program properties. The use of the $ (dollar) sign must 
+be used, so the program recognize that is an internal variable.
+
+$home		: The home directory of the current user
+$error		: Last error reported from the program
+$joysticks	: Number of joysticks connected and recognized by the program
+$dir_main	: The main directory in which the program is
+$dir_font	: The directory with all fonts used by the program
+			  (ex. $dir_theme/fonts)
+$dir_sound	: The directory with all sounds used by the program 
+			  (ex. $dir_theme/sounds)
+$dir_theme	: The theme directory, in use 
+$dir_image	: The directory with all images used by the program
+			  (ex. $dir_theme/images)
+$screen_width : Screen width
+$screen_height : Screen height
+$theme		: Theme name
+$fullscreen	: True if the program is in fullscreen, false if not
+$mousex		: Mouse x position
+$mousey		: Mouse y position
+$title		: The title of the program (can be changed in settings.ini file)
+$screen		: The screen name that is used currently 
+$listitem	: The number of the selected item, in a listview
+$var001 
+   to 
+$var100 	: Variable of component according to its index no. For example, for 
+			  labels is the caption, for listviews is the selected item etc.
+$sql_count  : Number of records in an sqlite database
+$sql_index  : Number of current record in sqlite database
+$sql_filename : Filename of sqlite database
+$sql_table	  : Name of table in use by the sqlite component
+$field01 
+to max fields
+$field99    : Represents the text contained in a field of the current record.
+			  If a table has ex. 10 fields, you can use variable from $field01
+			  to $field10. If you use the field $field11 an exception will be
+			  caused and the program will terminate.
+
+-------------------------------------------------------------------------------
+  ___                              _    
+ / __|___ _ __  _ __  __ _ _ _  __| |___
+| (__/ _ \ '  \| '  \/ _` | ' \/ _` (_-<
+ \___\___/_|_|_|_|_|_\__,_|_||_\__,_/__/
+
+------------------------=[   External Commands   ]=----------------------------
+
+External commands are shell commands for the operating system. You can use any
+command, but not system (linux/windows) variables. Internal variables are 
+recognized and used inside commands. Each external command must begin with the
+| sign, to be recognized. You put the command in the command= field of each 
+component, in the .ini file. Some examples:
+
+command=|echo "hello"
+It will print Hello in the terminal
+
+command=|mogrify -type png *.jpg
+It will convert any jpg file inside current directory to png files
+
+command=|mkdir temp
+Will create a directory named temp.
+
+etc. etc. etc. Any shell command can be used. For labels there is an exception
+and external commands can be used as a caption. For example inside the ini file
+for a label, you can write this:
+
+caption=|date
+
+When the progral will load the label component, will put as the label text 
+(caption) the result of the command. In this case, the current date and time of
+the system.
+
+------------------------=[   Internal Commands   ]=----------------------------
+
+Procedures and commands that can be used in components. Some commands can be 
+used, also by other components, there is no restriction to that. The list below
+is just for reference and shows which commands are usually used by components.
+All commands must begin with the ! sign to recognized as internal commands.
+
+
+                              -=[ Button ]=-
+
+Button components are also used as simple images. You can click on them and
+execute commands. Move them, fade them and more.
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!getsimilarfile(<index>#<folder>#<filename>)
+
+ You can find a file with similar filename as the <filename> value, inside the
+ <folder>. Usefull in retro gaming, when you want to find an image file, based 
+ on the rom file. The name of the file that is found, will be returned as 
+ caption to the component with <index> number.
+
+ Example: !getsimilarfile(2#$home#supermariobros.gb)
+ If a similar file is found ex. supermariobros.png or supermariobros (usa).png
+ will be returned as caption to component with index 2.
+ 
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!getimagefromfield(<index>#<filename>#<line>#<field>)
+
+This command will load an image to a button component with <index> number. The
+full path of the file will be extracted from a csv file, which every field is 
+seperated with a ; sign (semicolon). 
+
+<filename>	: the csv filename
+<line> 		: the record number or line of the file
+<field> 	: number of field to get the path
+
+Example: !getimagefromfield(3#$dir_main/data.csv#$listitem#3)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!setimage(<index>#<file>)
+
+Loads an image to button with <index> number
+Example: !setimag(3#/home/user/Pictures/image.jpg)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!sql_next
+
+Goes to next database record. If it is the last, nothing happens.
+Example: !sql_next
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!sql_prev
+
+Goes to previouw database record. It it is the first, nothing happens,
+Example: !sql_prev
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!sql_first
+
+Goes to first record of database
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!sql_last
+
+Goes to last record of database.
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!sql_delete
+
+Deletes current record of database.
+Example: !sql_delete
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!sql_exec(<sql string>)
+
+Executes a sqlite expression to current database. Supports all sqlite
+expressions.
+
+Example: !sql_exec(select * from table where field='hello')
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!sql_goto(<no>)
+
+Selects the record <no> from database. 
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!getsqlimagefromfield(<index>#<field_number)
+
+Loads an image to button/image with index <index>, from field of current
+record in database
+
+Example: !getsqlimagefromfield(3#2)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!saveinistring(<filename>#<section>#<key>#<value>)
+
+Saves a value to an .ini file. If the file does not exist, it will be created.
+This way you can alter .ini files from themes or settings of the program or
+other programs.
+
+Example: !saveinistring(main.ini#label_1#command#|date)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!fade(<index>#up)
+!fade(<index>#down)
+
+Fades the image/button, up or down. It can be used also from other components.
+
+Example: !fade(2#up)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!slide(<index>#left)
+!slide(<index>#right)
+!slide(<index>#top)
+!slide(<index>#bottom)
+
+Slides the button/image to the side selected. Can be used to provide some
+graphic interaction to the buttons.
+
+Example: !slide(2#left)
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                                -=[ Label ]=- 
+
+!setlabel(<index>#text)
+
+Sets the text/caption of a label
+
+Example: !setlabel(2#Hello)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!setcolor(<index>#<color>)
+
+Sets the text color of label or textedit component. The color has must be in 
+this format: $rrggbb
+
+Example: !setcolor(2#$293834)
+		 It will set the label with index no 2, the color of $293834
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!loadfromfile(<index>#<path to file>)
+
+Loads a text document from a file. Used mostly with the text component but also
+with a label component
+
+Example: !loadfromfile(4#$home/data.txt)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!getfield(<index>#<filename>#<line>#<column>)
+
+Gets text from a csv file, from record <line> at field <column>
+
+Example: !getfield(2#data.csv#5#3)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!getsqlfield(<index>#<field>)
+
+Gets text from sqlite database, current record, field number <field>.
+
+Example: !getsqlfield(2#3)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!getinistring(<index>#<filename>#<section>#<key>)
+
+Gets and sets the label caption with the text from an .ini key.
+
+Example: !getinistring(2#data.ini#settings#color)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                               -=[ Progress ]=-
+
+!setprogress(<index>#<position>)
+!setprogress(<index>#up)
+!setprogress(<index>#down)
+
+
+
+Sets the position of the progress component. The position number must be 
+between max and min value. Instead of a number you can use the words up/down
+to move the progress one number up or down. If maximum or minimum value has
+reached, nothing will happen.
+
+Example: !setprogress(1#50)
+         !setprogress(1#up)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                                -=[ Listview ]=-
+
+!listview(<index>#up)
+!listview(<index>#pgup)
+!listview(<index>#down)
+!listview(<index>#pgdown)
+
+Scrolls or selects the listview item according to the pressed key.
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!getitemsfromfield(<index>#<filename>#<field>)
+
+It fills the listview items from a file with csv format. The names/caption of
+the listview items, will be from the <field>. The csv file must use semicolons
+; as seperators.
+
+Example: !getitemsfromfield(1#$dir_main/data.csv#1)
+         It will get all records from file data.csv and fill the listview items
+		 with names from field no. 1
+		
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+--> Command File for Listview
+
+The listview component uses a text file (csv) for its data (caption, command
+etc.) The format of the file must have the following fields. Each line is a 
+record.
+
+Item Caption%OnSelectCommand%OnExecuteCommand
+
+Item Caption	: The text of the item
+OnSelectCommand	: The command to execute when the user selects with the arrow
+				  keys the item.
+OnExecuteCommand: The command to execute when the user presses the Enter key to
+				  the item selected.
+
+If you want to not execute a command when select an item, put the nil word as
+a command, as in the examples. Multiple commands can be executed, but you have 
+to seperate them with a ; sign (semicolon). 
+
+Example:
+
+	Play%!playsound(click.ogg);!setlabel(2,Hello)%!video(play)
+	Play%nil%!video(pause)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                                 -=[ Gauge ]=-
+
+!setgauge(<index>#up)
+!setgauge(<index>#down)
+
+Moves the handle of the gauge/slider up or down
+
+Example: !setgauge(2#up)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                            -=[ Horizontal Slider ]=-
+
+The hslider component is using images as items, to display a graphical way to 
+the user, to select items. It can be used only once.
+
+!hslider(left)						    
+!hslider(right)
+
+Selects/scrolls the slider left or right. The data for the images and commands
+are retrieved from a data file.
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                                  -=[ Video ]=-
+
+The video component can be used only once inside a screen. That is why it has
+not an index number. It can play only ogv files with no sound.								
+
+!video(play)
+!video(pause)
+
+Plays or pauses the current video
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!video(filename)
+
+Loads a video file (ogv format) to the component.
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                                -=[ Other ]=-
+
+These are commands that can be used to multiple components or data files.
+								
+!exit
+
+Exits the program
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!playsound(<filename>)
+
+Plays a sound from <filename>. The file must be an .ogg file.
+
+Example: !playsound($dir_sound/click.ogg)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!background(<filename>)
+
+Changes the background image. The file must be a png file.
+
+Example: !background($dir_image/bg.png)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!update
+
+This is a tricky command. In some components there is an "update" property. 
+When this property is enabled and you execute the !update command, each 
+component in the screen which is enabled, will execute its command property and
+update its status. The !update command is moslty used with the Listview or
+HorizontalSlider component to update labels or images, when a new item is 
+selected.
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!throbber(on)
+!throbber(off)
+
+Retroid has a throbber component that you enable/disable when you want to 
+execute a long command. When the throbber is enabled, the user can still press
+buttons, it is not disabling them. It is used, just to inform the user that
+a command is beeing processed, to wait.
+
+Example:
+  command=!throbber(on);|wget http://asdadadsa.com/file.zip;!throbber(off)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!loadscreen(<name>)
+
+It loads a new screen, from file <name>.ini inside the current theme. With this
+command you can load the new screen to display.
+
+Example: !loadscreen(options)
+	     It will load a new screen from file options.ini inside current theme
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+!setopacity(<index>#<value>)
+
+Sets the opacity of a component, can be used to all components. The value must
+be between 0 - 255.
+
+Example: !setopacity(2#255)
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+-------------------------------------------------------------------------------
+ ___ _ _        
+| __(_) |___ ___
+| _|| | / -_|_-<
+|_| |_|_\___/__/
+
+------------------------=[       INI files       ]=----------------------------
+
+Retroid uses ini files for component properties and settings. You can edit them
+with only a text editor. Also the ini format is easy to read, so theming is 
+more easy to the user. There are two ini files that must be created and used.
+These are the settings.ini file which must be in the program directory and the
+standard.ini which contains properties of some standard components like the
+throbber. The standard.ini file, must be inside the theme directory.
+
+standard.ini --> Theme Directory
+settings.ini --> Program Directory
+
+
+                           -=[ settings.ini ]=-
+
+The format of the settings.ini file is the following. Is property is self
+explenatory, nothing difficult.
+
+[main]
+#The program will load in fullscreen mode true or false
+fullscreen=false
+#The title of the program window, if not fullscreen
+title=Retroid v0.8
+
+[theme]
+#The theme name that will be used
+name=default
+#Width of the theme/screen
+width=800
+#Height of the theme/screen
+height=600
+
+			               -=[ standard.ini ]=-
+
+The standard.ini file, has some properties for components that are
+beeing used in the whole program. Currently only throbber is beeing
+used, but in the future more will be added.
+											
+[throbber]
+#Width of image file
+width=168
+#height of image file
+height=168
+#Image for throbber. It spins in 360 degrees.
+image=throbber.png
+#Opacity for image
+opacity=255
+
+                          -=[ Screen Files ]=-
+                          
+Each screen file, is an .ini file, that contains properties for the components.
+Every section in the ini file, is a component and the keys are the properties
+for the components. The section name is the same for each component family, but
+there is a number which must be unique.
+
+For example, these are some sections describing components:
+
+[label_1]
+
+[label_2]
+
+[button_1]
+
+[button_2]
+
+[button_3]
+
+[listview_1]
+
+etc.
+
+The number shows how many items of the same category/family of components we
+have in our screen. It is not the same with the index number, do not confuse 
+them.
+
+Some components like the video or sqlite, are unique for a screen, so they do 
+not need the number. Example:
+
+[video]
+
+[sqlite]
+
+[background]
+
+etc.
+
+Below are the properties for each component family and the description of them.
+
+-------------------------------------------------------------------------------
+  ___                                  _      
+ / __|___ _ __  _ __  ___ _ _  ___ _ _| |_ ___
+| (__/ _ \ '  \| '_ \/ _ \ ' \/ -_) ' \  _(_-<
+ \___\___/_|_|_| .__/\___/_||_\___|_||_\__/__/
+               |_|              
+
+------------------------=[      Components       ]=----------------------------
+
+Retroid has a set of components to use, these are:
+
+- Labels
+- EditText
+- Buttons/Images
+- Listview
+- Progress Bar
+- Horizontal Slider
+- Video
+- Gauge
+- Slider
+- Throbber
+
+Each component has its own properties. Almost all components can execute a 
+command and have an identity number which is called Index. The index number
+must be unique. If two components have the same index number then the screen or
+theme will not load correctly.
+
+Some components have not an index number (ex. video or sql) and can use them 
+only once in a screen/.ini file. But all the other components can be used
+multiple times. ex. you can have 30 labels, 20 buttons, 4 listviews etc. The
+combination are limited only by the total number of components (which is 100).
+
+There are properties that are common to all components and need specific
+values. A list of them is below, with the values that can take.
+
+Property            - Value
+opacity             - 0 to 255
+click               - true, false
+top,
+left,
+right,
+bottom              - Index number of other component
+x,y                 - The position in pixels, of the component. The values
+                      can also be negative. A value of -1 centers the component,
+                      and a value of -2 right aligns it, or bottom aligns it.
+color               - $000000 - $FFFFFF
+enabled             - true, false
+update              - true, false
+command             - Any internal or external command. Multiple commands can
+                      be issued, seperated by a semicolon (;).
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                             .oO0 Label 0Oo.
+
+The label component displays a line of text. If you assign the length property
+it will show only that length of text and then the label will scroll back and
+forward. You can also click on a label and use it as a button.
+
+#Component with increasing number
+[label_1]
+#X Position
+x=1 
+#Y Position
+y=1
+# Text align (left, right, center)
+align=left
+#Text
+text=This is a label
+#Text color
+color=$aaaaaa
+#Can be clicked (true/false)
+click=false
+#Command to execute when clicked. The click property must be true
+command=!sql_exec(select * from games where title like "Z%");!update
+#Opacity (0 - 255)
+opacity=200
+#Length in characters. You may not use it.
+length=20
+#Auto update the caption
+timer=false
+#Component to choose when the Up button pressed
+top=54
+#Component to choose when the Down button pressed
+bottom=28
+#Component to choose when the Left button pressed
+left=23
+#Component to choose when the Right button pressed
+right=1              
+#Unique identifier for components. Each component must have a different
+#index number.
+index=55
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                              .oO0 Button 0Oo.
+                              
+The button component can be used also to load images. You can click on it, 
+execute commands and also apply some effects (slide, fade).                              
+
+[button_1]
+#X Position
+x=1 
+#Y Position
+y=1
+#Width
+width=48
+#Height
+height=48
+#Image filename. Relative or absolute path can be used.
+image=button.png
+#Image filename, when the button is pressed. You may not use it.
+image_pressed=button_pressed.png
+#Can be clicked (true/false)
+click=true
+#A string caption for the button. You may also not use it, at all
+caption=Press me
+#If true it will execute the command when the !update command is issued.
+update=false
+#If true it will resize the image to match the width and height. If is false
+#the width and the heigth will be the same with the image file
+resize=true
+#Command to execute when pressed
+command=!loadscreen(nintendo)
+#Opacity
+opacity=255
+#Component to choose when the Up button pressed
+top=54
+#Component to choose when the Down button pressed
+bottom=28
+#Component to choose when the Left button pressed
+left=23
+#Component to choose when the Right button pressed
+right=1              
+#Unique identifier for components. Each component must have a different
+#index number.
+index=55
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                              .oO0 Panel 0Oo.
+
+A simple panel. Its purpose is to help the themer to beautify the screens. It
+is not containing any components.
+
+[panel_1]
+x=50
+y=50
+width=475
+height=300
+#Images for each element of panel
+image_top=panel_top.png
+image_bottom=panel_bot.png
+image_left=panel_left.png
+image_right=panel_right.png
+image_topleft=panel_left_top.png
+image_topright=panel_right_top.png
+image_bottomleft=panel_bot_left.png
+image_bottomright=panel_bot_right.png
+#You can also make it visible or not with this property
+enabled=true
+opacity=255
+#The color is filling the middle of the panel
+color=$222222
+index=6
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                            .oO0 Listview 0Oo.
+
+With a Listview, you can display several items and choose one from them. The
+Listview also uses the PGUP/PGDOWN keys for fast navigation. Also it has an
+internal variable ($listitem) which is the number of the selected item in the
+list. You can use it to display items/records, from a csv file. You can use the
+UP/DOWN buttons to select items. The LEFT/RIGHT buttons are for navigating to 
+other components with Left/Right property.
+
+[listview_1]
+x=1
+y=1
+width=100
+height=100
+#The number of items to show on the list
+items_count=10
+#Bacground color if there is no background image
+bg_color=$000000
+#Color for the text of the items
+text_color=$ffffff
+opacity=255
+#Opacity for the selection image
+selection_opacity=150
+#Image file for selection
+selection_image=sel.png
+#Background image for listview
+bg_image=lsbg.png
+#CSV file for the data
+items_file=data.csv
+index=1
+left=2
+right=3                           
+
+The Listview component needs a csv file to get the items to display and the
+commands to execute when selecting or navigating through items. The format of 
+this file is:
+
+<Item>%<OnSelectCommands>%<onExecuteCommands>
+
+<item>				: The name/text to display on Listview
+<OnSelectCommands>	: Commands to execute when navigating/selecting an item
+<OnExecuteCommands> : Commands to execute when pressing the Enter key or mouse
+					  button.
+					  
+Multiple commands can be used in each case. You have to seperate them with a 
+semicolon ;
+
+Example:
+
+Super Mario Land 2%!setcolor(2#$ffff00);!update%|gameboy.sh supermarioland2.gb
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                             .oO0 Text 0Oo.
+
+The Text component displays large strings with multiple lines. It can align the
+text horizontal and vertical. If the text is larger than the size of the compo-
+nent, the text is truncated. It also has a Command property which is used to 
+enter text automatically with the !update command.
+
+[text_1]
+x=1
+y=450
+width=800
+height=200
+#Horizontal Align (left, center, right, justify)
+align_hor=left
+#Vertical Align (top, center, bottom)
+align_ver=top
+#You can write a small text/string in here
+text=
+#Update the component when an !update command is issued
+update=true
+color=$ffff00
+#You can use commands to enter/read text from files or a database
+command=
+#command=!loadfromfile(18#$field04)
+opacity=200
+#If true, it will execute the command every 5 seconds.
+timer=false
+index=18
+bottom=1                            
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                           .oO0 Progress 0Oo.
+
+The progress component uses to image files. One when it is in the minimum value
+and one when it is full. You can change the position with the appropriate 
+commands (see above).
+
+[progress_1]
+x=1
+y=1
+width=200
+height=50
+min=0
+max=100
+position=1
+top=1
+bottom=2
+left=3
+right=4
+index=5
+#You can execute this command by clicking on it. Use the $varxxx variable to 
+#get the position value.
+command=
+image_empty=progress_empty.png
+image_full=progress_full.png
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                              .oO0 Gauge 0Oo.
+
+The Gauge component is a Progress component, but in a circle shape, like a
+speedometer. It also has the same properties with the Progress comp. except
+that it uses one image for the background and another one to display a needle,
+like a speedometer. The image that representes the needle is beeing rotated, 
+with the center of the image as the pivot point.
+
+[gauge_1]
+x=
+y=
+height=
+width=
+index=
+top=
+left=
+bottom=
+right=
+min=
+max=
+position=
+command=
+opacity=
+bg_opacity=
+bg_image=
+needle_image=
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                              .oO0 Slider 0Oo.
+                              
+The slider is like a volume control that you can move its knob up and down. The
+It has a minimum/maximum value and the position of the knob is also stored in
+the $valxxx variable of the component. You can use it with the command of the
+component.
+
+[slider_1]
+x=
+y=
+height=
+width=
+index=
+top=
+left=
+bottom=
+right=
+min=0
+max=100
+#True if you can click on it, false if not.
+enabled=
+position=0
+command=
+opacity=255
+image_bg=
+image_knob=
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                              .oO0 Switch 0Oo.
+                              
+The switch compononent is a two state button. You can press it to enable some-
+thing, press again to disable it. That's shy it has two command properties.
+
+[switch_1]
+x=
+y=
+height=
+width=
+index=
+top=
+left=
+bottom=
+right=
+opacity=
+#True if you can click on the switch, false if not.
+click=
+#The state of the switch true/false
+checked=
+#Commands to execute when it is pressed or not
+command_on=
+command_off=
+#Images for the two states of the switch button.
+image_on=
+image_off=
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                             .oO0 TextEdit 0Oo.
+
+You can write and edit a small string with this component. You select it and
+press Enter or by mouse clicking on it. Write the text you want and Enter again
+to confirm. The value of the components it's stored in the $varxxx variable.
+
+[textedit_1]
+x=
+y=
+height=
+width=
+index=
+top=
+left=
+bottom=
+right=
+opacity=
+#Text alignment (left, center, right)
+align=
+#You can write an initial text or leave empty
+text=
+color=
+opacity=
+#maximum length of the string
+length=
+#True to execute the command if clicked, false for not.
+click=
+#Command to execute when you enter a text
+command=
+#True to allow to edit the text, or false 
+edit=
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                              .oO0 Video 0Oo.
+
+Plays an ogv video file. You can click on it to play/pause. With the Click 
+property you can make the component to not react in clicking/selecting. This
+way you can make it as a wallpaper for the application, like in the Animator
+theme.
+
+[video]
+x=10
+y=400
+width=600
+height=800
+#Only OGV files are supported
+filename=video.ogv
+#If true the video plays as soon it is loaded. If false, the video is paused
+play=true
+#If true you can pause the video by clicking/selecting.
+click=true
+index=3
+top=2
+left=1
+bottom=4
+right=5
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                             .oO0 Clock 0Oo.
+
+The clock component shows the time and/or date. It is auto updating every
+minute.
+
+[clock]
+# X Position
+x=270
+#Y position
+y=115
+#The string format. It uses the same rules as the linux date command
+#format=DD/MM/YYYY - hh:mm
+format=DD mmm YYYY - hh:mm
+#Text color
+color=$aaaaaa
+#Text Opacity
+opacity=150
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                           .oO0 Background 0Oo.
+
+Properties of the background.
+
+[background]
+#Image filename, relative or absolute
+image=retroidbgs.png
+#Fade in, when screen is loading (true, false)
+fade=false
+#Soundfile when item/component is clicked
+clicksound=Select8-Bit.ogg
+#Soundfile when something wrong happens.
+errorsound=click_error.ogg
+#Command to execute after loading the screen
+#Example:
+#|convert $dir_image/gameboybg.png -blur 0x8 $dir_image/1111.png;!update;!background(1111.png)
+command=!playsound(click.ogg);!update
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                              .oO0 Font 0Oo.
+
+The fonts in Retroid are .zfi files, inside the fonts directory of the theme.
+You must use the filename, with out the extension.
+
+[font]
+#Font name. Must be the same as the font filename in the fonts directory
+name=Charybdis
+#Color for general text and selection
+color=$aaaaaa
+
+,.;';.,.';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.,.;';.
+
+                             .oO0 Sqlite 0Oo.
+
+You can use an sqlite database/file for data manipulation inside the program.
+There are many commands that you can control the component. See the command
+above.
+
+[sqlite]
+#The name of the table inside the database
+tablename=games
+#The filename of the database
+filename=gamedata/gb/games.db
+#The sqlite query to open the database
+sql=select * from games
