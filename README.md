@@ -6,3 +6,5 @@ http://retroid.freeforums.org
 
 Watch a demo here:
 https://www.youtube.com/watch?v=eJ-JBf4ZDog
+
+To compile it you will need ZenGL (http://www.zengl.org/), Freepascal and sqlite3 installed on your system.
